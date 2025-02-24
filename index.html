@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="taskManagerApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body ng-controller="TaskController">
+    <div class="app-container">
+        <header>
+            <h1><i class="fas fa-tasks"></i> Task Manager</h1>
+        </header>
+        <div class="task-form">
+            <h2>Create New Task</h2>
+            <input type="text" ng-model="newTask.title" placeholder="Title" required>
+            <textarea ng-model="newTask.description" placeholder="Description"></textarea>
+            <div class="category-input">
+                <select ng-model="newTask.category">
+                    <option value="">Select Category</option>
+                    <option ng-repeat="category in categories" value="{{category}}">{{category}}</option>
+                </select>
+                <input type="text" ng-model="newCategory" placeholder="New Category">
+                <button ng-click="addCategory()"><i class="fas fa-plus"></i> Add Category</button>
+            </div>
+            <button ng-click="createTask()"><i class="fas fa-plus"></i> Create Task</button>
+        </div>
+        <div class="container">
+            <div class="column">
+                <h2><i class="fas fa-clock"></i> Pending</h2>
+                <div id="pending" ng-repeat="task in tasks | filter:{status: 'pending'}" class="card" data-task-id="{{task.id}}">
+                    <h3>{{task.title}}</h3>
+                    <p>{{task.description}}</p>
+                    <div class="task-category">{{task.category}}</div>
+                    <div class="task-actions">
+                        <button ng-click="completeTask(task.id)" class="complete-btn"><i class="fas fa-check"></i></button>
+                        <button ng-click="deleteTask(task.id)" class="delete-btn"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <h2><i class="fas fa-check-circle"></i> Completed</h2>
+                <div id="completed" ng-repeat="task in tasks | filter:{status: 'completed'}" class="card" data-task-id="{{task.id}}">
+                    <h3>{{task.title}}</h3>
+                    <p>{{task.description}}</p>
+                    <div class="task-category">{{task.category}}</div>
+                    <div class="task-actions">
+                        <button ng-click="reopenTask(task.id)" class="reopen-btn"><i class="fas fa-undo"></i></button>
+                        <button ng-click="deleteTask(task.id)" class="delete-btn"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
+
